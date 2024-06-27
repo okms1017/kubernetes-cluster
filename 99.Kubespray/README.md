@@ -1,0 +1,3 @@
+- ${HOME}/kubespray/requirements.txt
+- ${HOME}/kubespray/inventory/mycluster/hosts.yml
+- ${HOME}/kubespray/inventory/mycluster/group_vars/k8s_cluster/k8s-cluster.yml
