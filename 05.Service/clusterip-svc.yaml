@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: clusterip-svc
+spec:
+  ports:
+    - name: svc-webport
+      port: 9000        # 서비스 포트
+      targetPort: 80    # 목적지 파드 포트
+  selector:
+    app: webpod         # app:webpod 레이블 파드 연동
+  type: ClusterIP       # 서비스 타입
