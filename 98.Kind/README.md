@@ -2,7 +2,7 @@
 - Kind Cluster 설치 
  
 ```sh
-kind create cluster --config kind-svc-1w.yaml --name myk8s --image kindest/node:v1.31.0
+kind create cluster --config kind-cluster.yaml --name myk8s --image kindest/node:v1.31.0
 ```
 
 - 기본 툴 설치
