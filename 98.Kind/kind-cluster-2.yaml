@@ -1,0 +1,55 @@
+kind: Cluster
+apiVersion: kind.x-k8s.io/v1alpha4
+featureGates:
+  "InPlacePodVerticalScaling": true  # 실행 중인 파드의 리소스 요청 및 제한 변경 O
+  "MultiCIDRServiceAllocator": true  # 서비스 Multi-CIDR 
+nodes:
+- role: control-plane
+  labels:
+    mynode: control-plane
+    topology.kubernetes.io/zone: ap-northeast-2a
+  extraPortMappings:  # 컨테이너 포트 - 호스트 포트 매핑
+  - containerPort: 30000
+    hostPort: 30000
+  - containerPort: 30001
+    hostPort: 30001
+  - containerPort: 30002
+    hostPort: 30002
+  - containerPort: 30003
+    hostPort: 30003
+  - containerPort: 30004
+    hostPort: 30004
+  kubeadmConfigPatches:
+  - |
+    kind: ClusterConfiguration
+    apiServer:
+      extraArgs:  # API 서버에 추가 인수를 제공
+        runtime-config: api/all=true  # 모든 API 버전 활성화
+    controllerManager:
+      extraArgs:
+        bind-address: 0.0.0.0
+    etcd:
+      local:
+        extraArgs:
+          listen-metrics-urls: http://0.0.0.0:2381
+    scheduler:
+      extraArgs:
+        bind-address: 0.0.0.0
+  - |
+    kind: KubeProxyConfiguration
+    metricsBindAddress: 0.0.0.0
+- role: worker
+  labels:
+    mynode: worker1
+    topology.kubernetes.io/zone: ap-northeast-2a
+- role: worker
+  labels:
+    mynode: worker2
+    topology.kubernetes.io/zone: ap-northeast-2b
+- role: worker
+  labels:
+    mynode: worker3
+    topology.kubernetes.io/zone: ap-northeast-2c
+networking:
+  podSubnet: 10.10.0.0/16  # 파드 CIDR 
+  serviceSubnet: 10.200.1.0/24  # 서비스 CIDR 
