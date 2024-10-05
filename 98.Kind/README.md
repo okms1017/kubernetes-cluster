@@ -13,5 +13,5 @@ $ for i in worker worker2 worker3; do echo ">> node myk8s-$i <<"; docker exec -i
 
 - Kind Cluster 삭제
 ```sh
-$ kind delete cluster
+$ kind delete cluster --name myk8s
 ```
