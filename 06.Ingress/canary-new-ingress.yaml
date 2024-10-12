@@ -18,4 +18,3 @@ spec:
             name: svc-v2
             port:
               number: 8080
-EOT
