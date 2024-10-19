@@ -1,0 +1,15 @@
+apiVersion: networking.istio.io/v1
+kind: VirtualService
+metadata:
+  name: nginx-service
+spec:
+  hosts:
+  - "$MYDOMAIN"
+  gateways:
+  - test-gateway
+  http:
+  - route:
+    - destination:
+        host: svc-clusterip
+        port:
+          number: 80
