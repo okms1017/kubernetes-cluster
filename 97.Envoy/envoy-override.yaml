@@ -1,0 +1,7 @@
+admin:
+  address:
+    socket_address:
+      address: 0.0.0.0
+      port_value: 9902
+
+# envoy -c envoy-demo.yaml --config-yaml "$(cat envoy-override.yaml)"
