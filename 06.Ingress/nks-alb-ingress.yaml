@@ -1,0 +1,39 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: test-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+    alb.ingress.kubernetes.io/scheme: internet-facing
+    alb.ingress.kubernetes.io/target-type: instance
+    alb.ingress.kubernetes.io/actions.mait-ext-svc: >
+      {
+        "type": "targetGroup",
+        "targetGroup": {
+          "targetGroups": [
+            {
+              "serviceName": "test-ext-svc",
+              "servicePort": 80
+            }
+          ]
+        }
+      }
+spec:
+  ingressClassName: alb
+  rules:
+  - http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: test-ext-svc
+            port:
+              name: use-annotation
+      - path: /mydata
+        pathType: Prefix
+        backend:
+          service:
+            name: test-ext-svc
+            port:
+              name: use-annotation
