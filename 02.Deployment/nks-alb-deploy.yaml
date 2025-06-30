@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-ext-deploy
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: test-ext-app
+  template:
+    metadata:
+      labels:
+        app: test-ext-app
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: nodepool
+                    operator: In
+                    values:
+                      - gpu-alb
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
+      tolerations:
+      - key: nvidia.com/gpu
+        operator: Exists
+        effect: NoSchedule
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-int-deploy
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: test-int-app
+  template:
+    metadata:
+      labels:
+        app: test-int-app
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        ports:
+        - containerPort: 80
